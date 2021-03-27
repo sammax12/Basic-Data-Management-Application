@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -66,7 +67,7 @@ public class Contact {
             list.add(1, ID + ",");
         }
 
-        DBFileManager.writeToFile(list, DBFileManager.fileArray[fileType]);
+        DBFile.writeToFile(list, DBFile.fileArray[fileType]);
         list.clear();
     }
 

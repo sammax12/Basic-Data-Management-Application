@@ -1,10 +1,10 @@
+
 import java.io.IOException;
 import java.util.Scanner;
 
 public class MainBDMA {
- public static void main(String[] args) throws Exception {
-   
-    menu();
+    public static void main(String[] args) throws Exception {
+        menu();
     }
 
     static void menu() throws InterruptedException, IOException {
@@ -16,6 +16,7 @@ public class MainBDMA {
 
             if (scan.hasNextInt()) { // Error handling if user input not int.
                 pick = Integer.parseInt(scan.nextLine());
+
                 if ((pick < 1) || (pick > 5)) {
                     System.out.println("Retry! Enter input 1 - 5");
                 } else {
@@ -27,17 +28,16 @@ public class MainBDMA {
                         new EditRecord();
                         break;
                     case 3:
-                        new Search();
+                        new SearchContact();
                         break;
                     case 4:
-                        new DeleteRecord();
+                        new DeleteRecord(false);
                         break;
                     case 5:
                         System.out.println("Exit \n");
                         scan.close();
                         return;
                     }
-
                 }
             } else {
                 System.out.println("Retry! Enter input 1 - 5");

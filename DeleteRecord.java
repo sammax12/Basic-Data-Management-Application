@@ -10,8 +10,9 @@ public class DeleteRecord {
 
     private String serchContact, reference, foreignKey;
 
-    public DeleteRecord() throws IOException {
-        deleteRecordHelper();
+    public DeleteRecord(boolean deleteEditRecord) throws IOException {
+       if(!deleteEditRecord)
+            deleteRecordHelper();
     }
 
     private void deleteRecordHelper() throws IOException {
@@ -28,13 +29,13 @@ public class DeleteRecord {
         deleteRecord();
     }
 
-    private void deleteRecord() throws IOException {
+    public void deleteRecord() throws IOException {
         BufferedReader br;
         PrintWriter pw;
         File tempFile, orgFilePath;
         String line;
 
-        for (File file : DBFileManager.fileArray) {
+        for (File file : DBFile.fileArray) {
             orgFilePath = file;
             tempFile = new File("./textFiles/tempFile");
             pw = new PrintWriter(tempFile);
@@ -65,17 +66,21 @@ public class DeleteRecord {
     private String getForeignKey() throws IOException {
         String line;
         String[] lineResult;
-        BufferedReader br = new BufferedReader(new FileReader(DBFileManager.fileArray[0]));
+        BufferedReader br = new BufferedReader(new FileReader(DBFile.fileArray[0]));
 
         while ((line = br.readLine()) != null) {
             lineResult = line.trim().split("[,]");
 
             System.out.println(Arrays.toString(lineResult));
 
-            if (lineResult[DBFileManager.collumMap.get(reference)].trim().equals(serchContact))
+            if (lineResult[DBFile.collumMap.get(reference)].trim().equals(serchContact))
                 return lineResult[0].trim();
         }
         br.close();
         return null;
+    }
+
+    public void setForeignKey(String foreignKey) {
+        this.foreignKey = foreignKey;
     }
 }
