@@ -13,7 +13,6 @@ public class Contact {
 
     List<String> list = new ArrayList<String>();
 
-
     public Contact() throws InterruptedException, IOException {
         createContact();
     }
@@ -63,21 +62,20 @@ public class Contact {
     }
 
     private void wirteToFileHelper(int fileType, String endofQuestion) throws IOException {
-        if (endofQuestion.equals("endContactQuestion")){
+        if (endofQuestion.equals("endContactQuestion")) {
             DBFile.setPrimaryKey("Contact");
-            String ID = Integer.toString((DBFile.getPrimaryKey("Contact")));
-            list.add(0, ID);
-    }
-        else {
-            list.add(0, randIDCreate());
-            list.add(1, randIDCreate());
+            list.add(0, Integer.toString((DBFile.getPrimaryKey("Contact"))));
+        } else if (endofQuestion.equals("endAddressQuestion")){
+            DBFile.setPrimaryKey("AddressTableID");
+            list.add(0, Integer.toString((DBFile.getPrimaryKey("AddressTableID"))));
+            list.add(1, Integer.toString((DBFile.getPrimaryKey("Contact"))));
+        } else if (endofQuestion.equals("endPhoneQuestion")){
+            DBFile.setPrimaryKey("PhoneTableID");
+            list.add(0, Integer.toString((DBFile.getPrimaryKey("PhoneTableID"))));
+            list.add(1, Integer.toString((DBFile.getPrimaryKey("Contact"))));
         }
 
         DBFile.writeToFile(list, DBFile.fileArray[fileType]);
         list.clear();
-    }
-
-    private String randIDCreate() {
-        return Integer.toString(((int) (Math.random() * (8999)) + 1000));
     }
 }

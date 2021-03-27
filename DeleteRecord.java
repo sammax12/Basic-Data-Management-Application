@@ -41,7 +41,6 @@ public class DeleteRecord {
             br = new BufferedReader(new FileReader(file));
 
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
                 if (!line.contains(foreignKey)) {
                     pw.write(line);
                     pw.println();

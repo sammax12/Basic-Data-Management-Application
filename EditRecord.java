@@ -27,10 +27,10 @@ public class EditRecord extends AbstractSearch {
         setLookUp(setLookUP);
         searchFileRefrence(search);
         
-        System.out.println("=====Full Contact Data For Edit======");
-        
+        System.out.println("\n=====Full Contact Data For Edit======");
+        printContactData();
 
-        System.out.println("What are you change?");
+        System.out.println("\nWhat are you change?");
         replace = scan.nextLine();
         System.out.println("What are you change " + replace + " too?");
         toReplace = scan.nextLine();
@@ -44,16 +44,12 @@ public class EditRecord extends AbstractSearch {
     private void editLine() throws IOException {
         List<String> index;
 
-        // Delete and then write to file.
-        System.out.println(record.size());
-
         for (int i = 0; i < record.size(); i++) {
             index = record.get(i);
 
-            if (index.contains(replace))
+            if ((index.contains(replace)) && !((index.indexOf(replace) == 0) || (index.indexOf(replace) == 1))){
                 index.set(index.indexOf(replace), toReplace);
-
-            System.out.println(index);
+            }
         }
 
         wirteToFileHelper();
@@ -67,7 +63,7 @@ public class EditRecord extends AbstractSearch {
         for(List<String> line: record)
         {
             writeToFileType = line.get(line.size() - 1);
-            System.out.println(writeToFileType);
+
             if(writeToFileType.equals("endOfContact"))
                 fileType = DBFile.fileArray[0];
             else if(writeToFileType.equals("endOfAddress"))
