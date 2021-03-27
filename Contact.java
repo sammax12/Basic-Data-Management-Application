@@ -11,8 +11,8 @@ public class Contact {
             "Whats City You Live In?", "Whats State You Live In?", "What Contury You Live In?", "endAddressQuestion",
             "What Type Of Phone You Have?", "Whats Your Phone Number?", "endPhoneQuestion" };
 
-    private final String ID = randIDCreate();
     List<String> list = new ArrayList<String>();
+
 
     public Contact() throws InterruptedException, IOException {
         createContact();
@@ -22,11 +22,13 @@ public class Contact {
         Scanner scan = new Scanner(System.in);
         String readIn, data;
 
+        DBFile.cheackIFPrimaryKeyFileExists();
+
         for (int infoGrabPostion = 0; infoGrabPostion < infoGrab.length; infoGrabPostion++) {
             data = infoGrab[infoGrabPostion];
 
             if (data.equals("endContactQuestion")) {
-                wirteToFileHelper(0, true);
+                wirteToFileHelper(0, "endContactQuestion");
                 continue;
 
             } else if (data.equals("endAddressQuestion")) {
@@ -34,7 +36,7 @@ public class Contact {
                 if ((readIn = scan.nextLine()).toLowerCase().equals("yes"))
                     infoGrabPostion = 3;
 
-                wirteToFileHelper(1, false);
+                wirteToFileHelper(1, "endAddressQuestion");
                 continue;
 
             } else if (data.equals("endPhoneQuestion")) {
@@ -42,7 +44,7 @@ public class Contact {
                 if ((readIn = scan.nextLine()).toLowerCase().equals("yes"))
                     infoGrabPostion = 9;
 
-                wirteToFileHelper(2, false);
+                wirteToFileHelper(2, "endPhoneQuestion");
                 continue;
             }
 
@@ -60,12 +62,15 @@ public class Contact {
         }
     }
 
-    private void wirteToFileHelper(int fileType, boolean ifEndofContactQuestion) throws IOException {
-        if (ifEndofContactQuestion)
+    private void wirteToFileHelper(int fileType, String endofQuestion) throws IOException {
+        if (endofQuestion.equals("endContactQuestion")){
+            DBFile.setPrimaryKey("Contact");
+            String ID = Integer.toString((DBFile.getPrimaryKey("Contact")));
             list.add(0, ID);
+    }
         else {
             list.add(0, randIDCreate());
-            list.add(1, ID);
+            list.add(1, randIDCreate());
         }
 
         DBFile.writeToFile(list, DBFile.fileArray[fileType]);

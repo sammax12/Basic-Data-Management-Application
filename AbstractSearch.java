@@ -63,7 +63,6 @@ public abstract class AbstractSearch {
                 Lasrname,
                 Gender,
                 Address,
-                APT #,
                 City,
                 State,
                 Country,

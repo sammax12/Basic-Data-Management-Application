@@ -54,7 +54,6 @@ public class DeleteRecord {
             if (!tempFile.renameTo(orgFilePath))
                 System.out.println("Unsuccsfull");
 
-            System.out.println(tempFile.getPath());
 
             pw.flush();
             pw.close();

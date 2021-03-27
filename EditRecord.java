@@ -28,17 +28,17 @@ public class EditRecord extends AbstractSearch {
         searchFileRefrence(search);
         
         System.out.println("=====Full Contact Data For Edit======");
-        printContactData();
+        
 
-        // System.out.println("What are you change?");
-        // replace = scan.nextLine();
-        // System.out.println("What are you change " + replace + " too?");
-        // toReplace = scan.nextLine();
+        System.out.println("What are you change?");
+        replace = scan.nextLine();
+        System.out.println("What are you change " + replace + " too?");
+        toReplace = scan.nextLine();
 
-        // deleteRecordBeforeEdit.setForeignKey(foreignKey);
-        // deleteRecordBeforeEdit.deleteRecord();
+        deleteRecordBeforeEdit.setForeignKey(foreignKey);
+        deleteRecordBeforeEdit.deleteRecord();
 
-        // editLine();
+        editLine();
     }
 
     private void editLine() throws IOException {
