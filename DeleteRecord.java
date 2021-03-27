@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class DeleteRecord {
@@ -11,7 +10,7 @@ public class DeleteRecord {
     private String serchContact, reference, foreignKey;
 
     public DeleteRecord(boolean deleteEditRecord) throws IOException {
-       if(!deleteEditRecord)
+        if (!deleteEditRecord)
             deleteRecordHelper();
     }
 
@@ -70,8 +69,6 @@ public class DeleteRecord {
 
         while ((line = br.readLine()) != null) {
             lineResult = line.trim().split("[,]");
-
-            System.out.println(Arrays.toString(lineResult));
 
             if (lineResult[DBFile.collumMap.get(reference)].trim().equals(serchContact))
                 return lineResult[0].trim();

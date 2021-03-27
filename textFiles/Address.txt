@@ -1,3 +1,2 @@
-8270,3623,1,1,1,1,1,
-6798,8795,1,1,1,1,1,
-4630,2450,5266 Corteen,123,Los,Ca,United States,
+6798,8795,4,1,1,1,1,
+4630,2450,566 Corteen,123,Los,California,United States,

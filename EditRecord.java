@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,14 +9,12 @@ import java.util.Scanner;
 
 public class EditRecord extends AbstractSearch {
 
-    private ArrayList<String> resultLine = new ArrayList<String>();
     private List<List<String>> record = new ArrayList<>();
     private String replace, toReplace, search, setLookUP;
+    private DeleteRecord  deleteRecordBeforeEdit = new DeleteRecord(true);
 
     public EditRecord() throws IOException {
         editLineHelper();
-        // System.out.println(record);
-        // System.out.println(record.size());
     }
 
     private void editLineHelper() throws IOException {
@@ -27,18 +26,19 @@ public class EditRecord extends AbstractSearch {
 
         setLookUp(setLookUP);
         searchFileRefrence(search);
-        System.out.println(record);
+        
+        System.out.println("=====Full Contact Data For Edit======");
+        printContactData();
 
-        System.out.println("What are you change?");
-        replace = scan.nextLine();
-        System.out.println("What are you change " + replace + " too?");
-        toReplace = scan.nextLine();
+        // System.out.println("What are you change?");
+        // replace = scan.nextLine();
+        // System.out.println("What are you change " + replace + " too?");
+        // toReplace = scan.nextLine();
 
-        // DeleteRecord deleteRecordBeforeEdit = new DeleteRecord(true);
         // deleteRecordBeforeEdit.setForeignKey(foreignKey);
         // deleteRecordBeforeEdit.deleteRecord();
 
-        editLine();
+        // editLine();
     }
 
     private void editLine() throws IOException {
@@ -56,14 +56,26 @@ public class EditRecord extends AbstractSearch {
             System.out.println(index);
         }
 
-        writeToFile();
+        wirteToFileHelper();
     }
 
-    private void writeToFile()
+    private void wirteToFileHelper() throws IOException
     {
+        String writeToFileType;
+        File fileType = null;
+        
         for(List<String> line: record)
         {
-            System.out.println((line.get(line.size()-1)));
+            writeToFileType = line.get(line.size() - 1);
+            System.out.println(writeToFileType);
+            if(writeToFileType.equals("endOfContact"))
+                fileType = DBFile.fileArray[0];
+            else if(writeToFileType.equals("endOfAddress"))
+                fileType = DBFile.fileArray[1];
+            else if(writeToFileType.equals("endOfPhone"))
+                fileType = DBFile.fileArray[2];
+
+            DBFile.writeToFile(line.subList(0, line.size() - 1), fileType);
         }
     }
 
@@ -114,34 +126,7 @@ public class EditRecord extends AbstractSearch {
         fileOne.close();
     }
 
-    // if (lineResult.contains(replace)) {
-    // lineResult = lineResult.replaceAll(replace, toReplace);
-    // //line = String.join("", lineResult).replaceAll(",", "");
-    // System.out.println(lineResult);
-    // }
-    // for (File file : DBFile.fileArray) {
-    // br = new BufferedReader(new FileReader(file));
-    // while ((line = br.readLine()) != null) {
-    // lineResult = line.trim();
-    // // System.out.println(lineResult);
-
-    // if (lineResult.contains(replace)) {
-    // // lineResult = lineResult.replaceAll(replace, toReplace);
-    // System.out.println("TRUE\n" + lineResult);
-    // lol.add(lineResult);
-    // }
-
-    // // lol = new ArrayList<>(Arrays.asList(lineResult.split("[,]")));
-    // // DBFile.writeToFile(lol, DBFile.fileArray[1]);
-    // }
-    // System.out.println("\n");
-    // br.close();
-    // }
-    // System.out.println(this);
-
-    // @Override
-    public String toString(String resultLine) {
-        return String.join("", resultLine).replaceAll(",", " "); // String.format("%-20s", String.join(" ",
-                                                                 // record).replaceAll(",", "\n"));
+    public void printContactData() {
+         record.stream().map(printString -> String.join(" ", printString).replaceAll(",", " ")).forEach(System.out::println);
     }
 }

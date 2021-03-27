@@ -1,6 +1,7 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Contact {
@@ -11,7 +12,7 @@ public class Contact {
             "What Type Of Phone You Have?", "Whats Your Phone Number?", "endPhoneQuestion" };
 
     private final String ID = randIDCreate();
-    ArrayList<String> list = new ArrayList<String>();
+    List<String> list = new ArrayList<String>();
 
     public Contact() throws InterruptedException, IOException {
         createContact();
@@ -55,16 +56,16 @@ public class Contact {
                 readIn = "null";
             }
 
-            list.add(readIn + ",");
+            list.add(readIn);
         }
     }
 
     private void wirteToFileHelper(int fileType, boolean ifEndofContactQuestion) throws IOException {
         if (ifEndofContactQuestion)
-            list.add(0, ID + ",");
+            list.add(0, ID);
         else {
-            list.add(0, randIDCreate() + ",");
-            list.add(1, ID + ",");
+            list.add(0, randIDCreate());
+            list.add(1, ID);
         }
 
         DBFile.writeToFile(list, DBFile.fileArray[fileType]);

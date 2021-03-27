@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,7 +23,7 @@ public class DBFile {
     }
 
     // Write to the specifc file.
-    public static void writeToFile(ArrayList<String> dataList, File file) throws IOException {
+    public static void writeToFile(List<String> dataList, File file) throws IOException {
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -30,7 +31,7 @@ public class DBFile {
         PrintWriter pw = new PrintWriter(new FileWriter(file, true));
 
         for (String data : dataList)
-            pw.write(data);
+            pw.write(data + ",");
 
         pw.println();
         pw.flush();
