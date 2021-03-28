@@ -6,28 +6,33 @@ import java.util.Scanner;
 
 public class Contact {
 
+    // Contact data questions
     private final String[] infoGrab = new String[] { "Whats Your First Name?", "Whats Your Last Name?",
             "Whats Your Gender?", "endContactQuestion", "Whats Your Address?", "Whats Your Apartment (APT) Number?",
             "Whats City You Live In?", "Whats State You Live In?", "What Contury You Live In?", "endAddressQuestion",
             "What Type Of Phone You Have?", "Whats Your Phone Number?", "endPhoneQuestion" };
 
+    // Holds user input data
     List<String> list = new ArrayList<String>();
 
-    public Contact() throws InterruptedException, IOException {
+    public Contact() throws IOException {
         createContact();
     }
 
+    // Creating new contact and getting user input data for each question asked
     private void createContact() throws IOException {
         Scanner scan = new Scanner(System.in);
         String readIn, data;
 
+        // Check if primary key persistence file exists.
         DBFile.cheackIFPrimaryKeyFileExists();
 
+        // Iterating through all questions in infoGrab array.
         for (int infoGrabPostion = 0; infoGrabPostion < infoGrab.length; infoGrabPostion++) {
             data = infoGrab[infoGrabPostion];
 
             if (data.equals("endContactQuestion")) {
-                wirteToFileHelper(0, "endContactQuestion");
+                writeToFileHelper(0, "endContactQuestion");
                 continue;
 
             } else if (data.equals("endAddressQuestion")) {
@@ -35,7 +40,7 @@ public class Contact {
                 if ((readIn = scan.nextLine()).toLowerCase().equals("yes"))
                     infoGrabPostion = 3;
 
-                wirteToFileHelper(1, "endAddressQuestion");
+                writeToFileHelper(1, "endAddressQuestion");
                 continue;
 
             } else if (data.equals("endPhoneQuestion")) {
@@ -43,7 +48,7 @@ public class Contact {
                 if ((readIn = scan.nextLine()).toLowerCase().equals("yes"))
                     infoGrabPostion = 9;
 
-                wirteToFileHelper(2, "endPhoneQuestion");
+                writeToFileHelper(2, "endPhoneQuestion");
                 continue;
             }
 
@@ -61,20 +66,22 @@ public class Contact {
         }
     }
 
-    private void wirteToFileHelper(int fileType, String endofQuestion) throws IOException {
+    // Assigning primary keys to respected tables.
+    private void writeToFileHelper(int fileType, String endofQuestion) throws IOException {
         if (endofQuestion.equals("endContactQuestion")) {
             DBFile.setPrimaryKey("Contact");
             list.add(0, Integer.toString((DBFile.getPrimaryKey("Contact"))));
-        } else if (endofQuestion.equals("endAddressQuestion")){
+        } else if (endofQuestion.equals("endAddressQuestion")) {
             DBFile.setPrimaryKey("AddressTableID");
             list.add(0, Integer.toString((DBFile.getPrimaryKey("AddressTableID"))));
             list.add(1, Integer.toString((DBFile.getPrimaryKey("Contact"))));
-        } else if (endofQuestion.equals("endPhoneQuestion")){
+        } else if (endofQuestion.equals("endPhoneQuestion")) {
             DBFile.setPrimaryKey("PhoneTableID");
             list.add(0, Integer.toString((DBFile.getPrimaryKey("PhoneTableID"))));
             list.add(1, Integer.toString((DBFile.getPrimaryKey("Contact"))));
         }
 
+        // Writes user input data to file
         DBFile.writeToFile(list, DBFile.fileArray[fileType]);
         list.clear();
     }

@@ -7,42 +7,49 @@ public class MainBDMA {
         menu();
     }
 
-    static void menu() throws InterruptedException, IOException {
+    public static void menu() throws IOException {
         Scanner scan = new Scanner(System.in);
         int pick;
 
-        while (true) {
-            System.out.println(menuString());
+        try {
+            while (true) {
+                System.out.print(menuString() + "\nUSER INPUT(PICK NUMBER 1 - 5): ");
 
-            if (scan.hasNextInt()) { // Error handling if user input not int.
-                pick = Integer.parseInt(scan.nextLine());
+                if (scan.hasNextInt()) { // Error handling if user input not int.
 
-                if ((pick < 1) || (pick > 5)) {
-                    System.out.println("Retry! Enter input 1 - 5");
-                } else {
-                    switch (pick) {
-                    case 1:
-                        new Contact();
-                        break;
-                    case 2:
-                        new EditRecord();
-                        break;
-                    case 3:
-                        new SearchContact();
-                        break;
-                    case 4:
-                        new DeleteRecord(false);
-                        break;
-                    case 5:
-                        System.out.println("Exit \n");
-                        scan.close();
-                        return;
+                    pick = Integer.parseInt(scan.nextLine());
+
+                    if ((pick < 1) || (pick > 5)) {
+                        System.out.println("Retry! Enter input 1 - 5");
+                    } else {
+                        switch (pick) {
+                        case 1:
+                            new Contact();
+                            break;
+                        case 2:
+                            new EditRecord();
+                            break;
+                        case 3:
+                            new SearchContact();
+                            break;
+                        case 4:
+                            new DeleteRecord(false);
+                            break;
+                        case 5:
+                            System.out.println("Exit \n");
+                            scan.close();
+                            return;
+                        }
                     }
+                } else {
+                    System.out.println("Retry! Enter input 1 - 5");
+                    scan.nextLine();
                 }
-            } else {
-                System.out.println("Retry! Enter input 1 - 5");
-                scan.nextLine();
             }
+        } catch (IOException e) {
+            System.err.println(e.getStackTrace());
+        } finally {
+            scan.close();
         }
     }
 

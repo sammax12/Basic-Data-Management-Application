@@ -5,13 +5,15 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class AbstractSearch {
-    
+
     protected String[] lineResult;
     public String refernece, lookUp, foreignKey;
     protected BufferedReader br;
 
-    public AbstractSearch(){}
+    public AbstractSearch() {
+    }
 
+    // Search function other classes implement for thier search functionality needs.
     public abstract void searchFileRefrence(String refrence) throws IOException;
 
     public void getSearchRefernece() throws InputMismatchException, IOException {
@@ -20,7 +22,12 @@ public abstract class AbstractSearch {
         System.out.println(referenceString());
         refernece = scan.nextLine().toLowerCase();
 
-        System.out.println("What is your Sreach (CASE SENSITIVE!!!!)");
+        if (checkReferneceAll(refernece)) {
+            System.out.println("\nYour search was not recognized, Try Again");
+            return;
+        }
+
+        System.out.println("What is your Search (CASE SENSITIVE!!!!)");
         lookUp = scan.nextLine();
 
         if (checkRefernece(refernece)) {
@@ -29,6 +36,8 @@ public abstract class AbstractSearch {
             searchFileRefrence(refernece);
     }
 
+    // If refernece is not ID, Firstname, Lastname, or gender, this method is
+    // invoked to help assist to search functionality.
     private void searchFileRefrenceHelper(String localLookUp) throws IOException {
         String line;
         BufferedReader br;
@@ -76,4 +85,10 @@ public abstract class AbstractSearch {
                 || (refernece.equals("gender"))));
     }
 
+    private boolean checkReferneceAll(String refernece) {
+        return (!((refernece.equals("id")) || (refernece.equals("firstname")) || (refernece.equals("lastname"))
+                || (refernece.equals("gender")) || (refernece.equals("address")) || (refernece.equals("city"))
+                || (refernece.equals("state")) || (refernece.equals("country")) || (refernece.equals("phone"))
+                || (refernece.equals("phone number"))));
+    }
 }

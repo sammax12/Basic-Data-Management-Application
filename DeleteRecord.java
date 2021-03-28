@@ -7,27 +7,38 @@ import java.util.Scanner;
 
 public class DeleteRecord {
 
-    private String serchContact, reference, foreignKey;
+    private String serchContact, reference, contactPrimaryKey;
 
     public DeleteRecord(boolean deleteEditRecord) throws IOException {
-        if (!deleteEditRecord)
+        if (!deleteEditRecord) {
             deleteRecordHelper();
+            System.out.println("Delete Contact successful");
+        }
     }
 
+    // Get user inputs about what contact to delete.
     private void deleteRecordHelper() throws IOException {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Serach By Firstname or Lastname");
+        System.out.println("Serach ID, Firstname, or Lastname");
         reference = scan.nextLine().toLowerCase();
 
-        System.out.println("Whats the Contacts + " + reference + " you'll like to delete? (CASE SENSITIVE)");
+        System.out.println(reference);
+        System.out.println(checkReference());
+        if (checkReference()) {
+            System.out.println("\nReference Input is not ID, Firstname, or Lastname. Exited Delete Operation");
+            return;
+        }
+
+        System.out.println("Whats the Contacts " + reference + " you'll like to delete? (CASE SENSITIVE)");
         serchContact = scan.nextLine();
 
-        foreignKey = getForeignKey();
+        contactPrimaryKey = getPrimaryKey();
 
         deleteRecord();
     }
 
+    // Deleteing user inputed contact
     public void deleteRecord() throws IOException {
         BufferedReader br;
         PrintWriter pw;
@@ -41,7 +52,7 @@ public class DeleteRecord {
             br = new BufferedReader(new FileReader(file));
 
             while ((line = br.readLine()) != null) {
-                if (!line.contains(foreignKey)) {
+                if (!line.contains(contactPrimaryKey)) {
                     pw.write(line);
                     pw.println();
                 }
@@ -53,29 +64,41 @@ public class DeleteRecord {
             if (!tempFile.renameTo(orgFilePath))
                 System.out.println("Unsuccsfull");
 
-
             pw.flush();
             pw.close();
             br.close();
         }
     }
 
-    private String getForeignKey() throws IOException {
+    // Get primary key for the contact being deleted
+    private String getPrimaryKey() {
         String line;
         String[] lineResult;
-        BufferedReader br = new BufferedReader(new FileReader(DBFile.fileArray[0]));
 
-        while ((line = br.readLine()) != null) {
-            lineResult = line.trim().split("[,]");
+        try {
 
-            if (lineResult[DBFile.collumMap.get(reference)].trim().equals(serchContact))
-                return lineResult[0].trim();
+            BufferedReader br = new BufferedReader(new FileReader(DBFile.fileArray[0]));
+            while ((line = br.readLine()) != null) {
+                lineResult = line.trim().split("[,]");
+
+                if (lineResult[DBFile.collumMap.get(reference)].trim().equals(serchContact))
+                    return lineResult[0].trim();
+            }
+
+            br.close();
+
+        } catch (IOException e) {
+            System.err.println(e.getStackTrace());
         }
-        br.close();
+
         return null;
     }
 
-    public void setForeignKey(String foreignKey) {
-        this.foreignKey = foreignKey;
+    public void setContactPrimaryKey(String contactPrimaryKey) {
+        this.contactPrimaryKey = contactPrimaryKey;
+    }
+
+    private boolean checkReference() {
+        return (!(reference.equals("id")) || (!(reference.equals("firstname"))) || (!(reference.equals("lastname"))));
     }
 }
